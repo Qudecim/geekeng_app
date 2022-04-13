@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekeng/backend.dart';
+import 'package:geekeng/style.dart';
 
 class AuthPage extends StatefulWidget {
 
@@ -14,9 +15,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPage extends State<AuthPage> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   
-
   bool isErrorAuth = false;
 
   void _showErrorAuth() {
@@ -32,13 +31,32 @@ class _AuthPage extends State<AuthPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              child: Text(
+              'GEEKENG',
+              style: TextStyle(
+                color: MainStyle.main,
+                fontSize: 32,
+                fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              child: TextFormField(
+              child: TextField(
                 controller: _loginController,
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Username',
+                  enabledBorder: UnderlineInputBorder(      
+                      borderSide: BorderSide(color: Colors.white),   
+                  ),  
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: MainStyle.main),
+                  ), 
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.white),
+                  floatingLabelStyle: TextStyle(color: MainStyle.main),
                 ),
               )
             ),
@@ -47,16 +65,30 @@ class _AuthPage extends State<AuthPage> {
               child: TextField(
               controller: _passwordController,
               decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
+                  enabledBorder: UnderlineInputBorder(      
+                      borderSide: BorderSide(color: Colors.white),   
+                  ),  
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: MainStyle.main),
+                  ), 
                   labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.white),
+                  floatingLabelStyle: TextStyle(color: MainStyle.main),
                 ),
               )
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: MainStyle.main, // background
+                  onPrimary: MainStyle.mainText, // foreground
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(2)),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                ),
+                onPressed: () {
                     Backend.signin(_loginController.text, _passwordController.text)
                       .then(
                         (answer) => {
@@ -68,7 +100,17 @@ class _AuthPage extends State<AuthPage> {
                         }
                       );
                   },
-                  child: Text('Sign-in'),
+                child: Text('Sign-in'),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Do you have an account? ',
+                  style: TextStyle(
+                    color: MainStyle.mainText
+                  )
                 ),
                 TextButton(
                   onPressed: () { 

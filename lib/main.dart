@@ -17,7 +17,6 @@ class MyApp extends StatefulWidget {
 class _MyApp extends State<MyApp> {
 
   refresh() {
-    print('test');
     setState(() {});
   }
 
@@ -29,7 +28,8 @@ class _MyApp extends State<MyApp> {
     return MaterialApp(
       title: 'GeekEng',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Color.fromARGB(255, 32, 34, 43),
+        //fontFamily: 'Montserrat',
       ),
       home: FutureBuilder<dynamic>(
         future: SharedPreferencesUtil.readBool('isAuth'),
