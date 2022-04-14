@@ -28,106 +28,129 @@ class _AuthPage extends State<AuthPage> {
       body: Container(
         margin: const EdgeInsets.only(left: 20.0, right: 20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 30),
-              child: Text(
-              'GEEKENG',
-              style: TextStyle(
+            Expanded(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                child: const Text(
+                  'GEEKENG',
+                  style: TextStyle(
                 color: MainStyle.main,
                 fontSize: 32,
                 fontWeight: FontWeight.w300,
                 ),
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              child: TextField(
-                controller: _loginController,
-                style: TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.white),   
-                  ),  
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: MainStyle.main),
-                  ), 
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.white),
-                  floatingLabelStyle: TextStyle(color: MainStyle.main),
+            Expanded(
+              flex: 5,
+              child: Container(
+                alignment: Alignment.bottomRight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: TextField(
+                        controller: _loginController,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(      
+                              borderSide: BorderSide(color: !isErrorAuth?Colors.white:MainStyle.mainError),   
+                          ),  
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: !isErrorAuth?MainStyle.main:MainStyle.mainError),
+                          ), 
+                          labelText: 'Email',
+                          labelStyle: TextStyle(color: Colors.white),
+                          floatingLabelStyle: TextStyle(color: MainStyle.main),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: TextField(
+                        controller: _passwordController,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(      
+                                borderSide: BorderSide(color: !isErrorAuth?Colors.white:MainStyle.mainError),   
+                            ),  
+                            focusedBorder:  UnderlineInputBorder(
+                                borderSide: BorderSide(color: !isErrorAuth?MainStyle.main:MainStyle.mainError),
+                            ), 
+                            labelText: 'Password',
+                            labelStyle: TextStyle(color: Colors.white),
+                            floatingLabelStyle: TextStyle(color: MainStyle.main),
+                          ),
+                        ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: MainStyle.main, // background
+                          onPrimary: MainStyle.mainText, // foreground
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                        ),
+                        onPressed: () {
+                            Backend.signin(_loginController.text, _passwordController.text)
+                              .then(
+                                (answer) => {
+                                  if (!answer) {
+                                    _showErrorAuth(),
+                                    print('aaaauth')
+                                  } else {
+                                    widget.refreshHome()
+                                  }
+                                }
+                              );
+                          },
+                        child: Text('Sign-in'),
+                      ),
+                    )
+                  ],
                 ),
-              )
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              child: TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                  enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.white),   
-                  ),  
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: MainStyle.main),
-                  ), 
-                  labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.white),
-                  floatingLabelStyle: TextStyle(color: MainStyle.main),
-                ),
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: MainStyle.main, // background
-                  onPrimary: MainStyle.mainText, // foreground
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
+            Expanded(
+              flex:1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text(
+                    'Do you have an account? ',
+                    style: TextStyle(
+                      color: MainStyle.mainText
+                    )
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                ),
-                onPressed: () {
-                    Backend.signin(_loginController.text, _passwordController.text)
-                      .then(
-                        (answer) => {
-                          if (!answer) {
-                            _showErrorAuth()
-                          } else {
-                            widget.refreshHome()
-                          }
-                        }
-                      );
-                  },
-                child: Text('Sign-in'),
+                  TextButton(
+                    onPressed: () { 
+                      //print(isErrorAuth);
+                      widget.refreshHome();
+                    },
+                    child: const Text(
+                      'Sign-up',
+                      style: TextStyle(
+                        color: MainStyle.main
+                      )
+                      ),
+                  ),
+                ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Do you have an account? ',
-                  style: TextStyle(
-                    color: MainStyle.mainText
-                  )
-                ),
-                TextButton(
-                  onPressed: () { 
-                    //print(isErrorAuth);
-                    widget.refreshHome();
-                  },
-                  child: Text('Sign-up'),
-                ),
-              ],
-            ),
-            Visibility(
-              child: const Text(
-                'Oooops',
-                style: TextStyle(color: Colors.red),
-              ),
-              visible: isErrorAuth,
-            ),
+            )
+
+            // Visibility(
+            //   child: const Text(
+            //     'Oooops',
+            //     style: TextStyle(color: Colors.red),
+            //   ),
+            //   visible: isErrorAuth,
+            // ),
           ] 
         )
       )

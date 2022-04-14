@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekeng/pages/auth_page.dart';
 import 'package:geekeng/shared_preferences_util.dart';
 import 'package:geekeng/pages/home_page.dart';
+import 'package:geekeng/style.dart';
 
 
 void main() => runApp(MyApp());
@@ -28,7 +29,7 @@ class _MyApp extends State<MyApp> {
     return MaterialApp(
       title: 'GeekEng',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color.fromARGB(255, 32, 34, 43),
+        scaffoldBackgroundColor: MainStyle.background
         //fontFamily: 'Montserrat',
       ),
       home: FutureBuilder<dynamic>(
