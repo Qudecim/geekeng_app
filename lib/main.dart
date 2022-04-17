@@ -3,6 +3,7 @@ import 'package:geekeng/pages/auth_page.dart';
 import 'package:geekeng/shared_preferences_util.dart';
 import 'package:geekeng/pages/home_page.dart';
 import 'package:geekeng/style.dart';
+import 'package:geekeng/pages/register_page.dart';
 
 
 void main() => runApp(MyApp());
@@ -17,10 +18,6 @@ class MyApp extends StatefulWidget {
 
 class _MyApp extends State<MyApp> {
 
-  refresh() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -32,16 +29,12 @@ class _MyApp extends State<MyApp> {
         scaffoldBackgroundColor: MainStyle.background
         //fontFamily: 'Montserrat',
       ),
-      home: FutureBuilder<dynamic>(
-        future: SharedPreferencesUtil.readBool('isAuth'),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.data ?? false) {
-            return HomePage(refreshHome:refresh);
-          } else {
-            return AuthPage(refreshHome:refresh);
-          }
-        },
-      ),
+      initialRoute: '/auth',
+      routes: <String, WidgetBuilder>{
+        '/auth': (BuildContext context) => AuthPage(),
+        '/register': (BuildContext context) => RegisterPage(),
+        '/home': (BuildContext context) => HomePage(),
+      }
     );
   }
 

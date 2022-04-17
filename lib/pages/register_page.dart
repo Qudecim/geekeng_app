@@ -1,32 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:geekeng/backend.dart';
 import 'package:geekeng/style.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-// TODO: Нужно сделать что бы подчеркивались только те поля что приходят в errors из API
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _AuthPage createState() => _AuthPage();
+  _RegisterPage createState() => _RegisterPage();
 }
 
-class _AuthPage extends State<AuthPage> {
+class _RegisterPage extends State<RegisterPage> {
 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  @override
-  void initState() {
-    super.initState();
-    _prefs.then((SharedPreferences prefs) {
-      if (prefs.getBool('isAuth') ?? false) {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    });
-  }
 
   bool isErrorAuth = false;
 
@@ -42,7 +30,7 @@ class _AuthPage extends State<AuthPage> {
         child: Column(
           children: <Widget>[
             Expanded(
-              flex: 2,
+              flex: 4,
               child: Container(
                 alignment: Alignment.bottomCenter,
                 child: const Text(
@@ -56,17 +44,41 @@ class _AuthPage extends State<AuthPage> {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 10,
               child: Container(
                 alignment: Alignment.bottomRight,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 30),
+                      child: TextField(
+                        controller: _nameController,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                        ),
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(      
+                              borderSide: BorderSide(color: !isErrorAuth?Colors.white:MainStyle.mainError),   
+                          ),  
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: !isErrorAuth?MainStyle.main:MainStyle.mainError),
+                          ), 
+                          labelText: 'Name',
+                          labelStyle: const TextStyle(color: Colors.white),
+                          floatingLabelStyle: const TextStyle(color: MainStyle.main),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 30),
                       child: TextField(
                         controller: _loginController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                        ),
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(      
                               borderSide: BorderSide(color: !isErrorAuth?Colors.white:MainStyle.mainError),   
@@ -81,13 +93,16 @@ class _AuthPage extends State<AuthPage> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 30),
                       child: TextField(
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
                         controller: _passwordController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                        ),
                         decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(      
                                 borderSide: BorderSide(color: !isErrorAuth?Colors.white:MainStyle.mainError),   
@@ -113,18 +128,19 @@ class _AuthPage extends State<AuthPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                         ),
                         onPressed: () {
-                            Backend.signin(_loginController.text, _passwordController.text)
+                            Backend.signup(_nameController.text, _loginController.text, _passwordController.text)
                               .then(
                                 (answer) => {
                                   if (!answer) {
                                     _showErrorAuth(),
+                                    print('aaaauth')
                                   } else {
-                                      Navigator.pushNamed(context, '/home')
+                                    Navigator.pushNamed(context, '/home')
                                   }
                                 }
                               );
                           },
-                        child: const Text('Sign-in'),
+                        child: const Text('Sign-up'),
                       ),
                     )
                   ],
@@ -147,10 +163,10 @@ class _AuthPage extends State<AuthPage> {
                       //print(isErrorAuth);
                       //widget.refreshHome();
                       //Toast.error('Нет соединения с сервером');
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pop(context);
                     },
                     child: const Text(
-                      'Sign-up',
+                      'Sign-in',
                       style: TextStyle(
                         color: MainStyle.main
                       )
