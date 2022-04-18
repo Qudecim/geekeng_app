@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekeng/pages/auth_page.dart';
-import 'package:geekeng/shared_preferences_util.dart';
+import 'package:geekeng/pages/group_page.dart';
 import 'package:geekeng/pages/home_page.dart';
 import 'package:geekeng/style.dart';
 import 'package:geekeng/pages/register_page.dart';
@@ -34,6 +34,7 @@ class _MyApp extends State<MyApp> {
         '/auth': (BuildContext context) => AuthPage(),
         '/register': (BuildContext context) => RegisterPage(),
         '/home': (BuildContext context) => HomePage(),
+        '/group': (BuildContext context) => GroupPage(),
       }
     );
   }
