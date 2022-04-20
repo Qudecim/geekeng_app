@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekeng/shared_preferences_util.dart';
 import 'package:geekeng/style.dart';
+import 'package:geekeng/backend.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -23,6 +24,23 @@ class _HomePageState extends State<HomePage> {
           child: Column (
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                child: FutureBuilder<dynamic>(
+                  future: Backend.getGroups(), // a previously-obtained Future<String> or null
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
+                    List<Widget> items = [];
+                    if (snapshot.hasData) {
+                      for (var item in snapshot.data) {
+                        items.add(Text(item['name']));
+                      }
+                    }
+
+                    return Column(
+                      children: items,
+                    );
+                  }),
+              ),
               GestureDetector(
                 onTap: (){
                   Navigator.pushNamed(context, '/group');

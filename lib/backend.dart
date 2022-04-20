@@ -8,13 +8,16 @@ import 'dart:io';
 
 class Backend {
 
+  static const POST = 'post';
+  static const GET = 'get';
+
   static signin(String email, String password) async {
-    var data = await _call('sign_in',{'email': email, 'password': password});
+    var data = await _call('sign_in', value: {'email': email, 'password': password}, type: POST);
     return login(data);
   }
 
   static signup(String name, String email, String password) async {
-    var data = await _call('sign_up',{'name': name, 'email': email, 'password': password});
+    var data = await _call('sign_up', value: {'name': name, 'email': email, 'password': password}, type: POST);
     return login(data);
   }
 
@@ -29,17 +32,36 @@ class Backend {
     }
   }
 
-  static _call(String url, Object value) async {
+  static getGroups() async {
+    var d = await _call('group');
+    print(d);
+    return d;
+  }
+
+  static getGroup(String id) async {
+    return await _call('group/' + id);
+  }
+
+  static _call(String url, {Object? value, String type = GET}) async {
     var _url = Uri.parse('http://192.168.0.103/api/' + url);
 
     try {
-      var response = await http.post(_url, 
-        body: json.encode(value),
-        headers: {
+      var headers = {
           "Content-Type": "application/json",
           "Accept": "application/json"
-        },
-      );
+        };
+
+      if (await SharedPreferencesUtil.readBool('isAuth')) {
+        var token = await SharedPreferencesUtil.readString('token');
+        headers['Authorization'] = "Bearer " + token;
+      }
+
+      http.Response response;
+      if (type == POST) {
+        response = await http.post(_url, body: json.encode(value), headers: headers);
+      } else {
+        response = await http.get(_url,  headers: headers);
+      }
 
       var data = await jsonDecode(response.body);
 
