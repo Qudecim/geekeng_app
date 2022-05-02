@@ -33,9 +33,11 @@ class Backend {
   }
 
   static getGroups() async {
-    var d = await _call('group');
-    print(d);
-    return d;
+    return await _call('group');
+  }
+
+  static addGroup(String name) async {
+    return await _call('group', type: POST, value: {'name': name});
   }
 
   static getGroup(String id) async {

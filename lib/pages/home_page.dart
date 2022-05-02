@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekeng/shared_preferences_util.dart';
 import 'package:geekeng/style.dart';
 import 'package:geekeng/backend.dart';
+import 'package:geekeng/components/group_button.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -32,7 +33,8 @@ class _HomePageState extends State<HomePage> {
                     List<Widget> items = [];
                     if (snapshot.hasData) {
                       for (var item in snapshot.data) {
-                        items.add(Text(item['name']));
+                        print(item);
+                        items.add(GroupButton(group: item));
                       }
                     }
 
@@ -40,59 +42,6 @@ class _HomePageState extends State<HomePage> {
                       children: items,
                     );
                   }),
-              ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.pushNamed(context, '/group');
-                },
-                onLongPress: () {
-                  print("Long press");
-                },
-                child:Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  margin: const EdgeInsets.only(right: 30, left: 30, top: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: MainStyle.main,
-                  ),
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      Container (
-                        child: const Text(
-                          'Main',
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              child: const Text(
-                              'Слов: 10',
-                              style: TextStyle(
-                                color: Colors.white
-                              ),
-                            ),
-                            ),
-                            Container(
-                              child: const Text(
-                              'Занятий: 5',
-                              style: TextStyle(
-                                color: Colors.white
-                              ),
-                            ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ),
               ),
               GestureDetector(
                 onTap:() {
@@ -125,7 +74,8 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: MainStyle.main),
                             ),
                             onPressed: () {
-                              Navigator.pop(context);
+                              Backend.addGroup(_testController.text);
+                              Navigator.popAndPushNamed(context, '/home');
                             },
                           ),
                         ],
@@ -133,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                     }
                   ).then((result){
                     print(result);
+                    print('lala');
                   });
                 },
                 child: Container(
