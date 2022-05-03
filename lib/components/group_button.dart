@@ -9,7 +9,7 @@ class GroupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GestureDetector(
     onTap: (){
-      Navigator.pushNamed(context, '/group');
+      Navigator.pushNamed(context, '/group', arguments: {'group':group});
     },
     onLongPress: () {
       print("Long press");

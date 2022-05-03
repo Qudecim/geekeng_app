@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekeng/style.dart';
+import 'package:geekeng/backend.dart';
+import 'package:geekeng/components/word.dart';
 
 
 class GroupPage extends StatefulWidget {
@@ -13,6 +15,8 @@ class _GroupPage extends State<GroupPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
 
     return Scaffold(
       body: Container (
@@ -35,7 +39,26 @@ class _GroupPage extends State<GroupPage> {
 
             Expanded(
               flex: 20,
-              child: Container()
+              child: Container(
+                child: FutureBuilder<dynamic>(
+                  future: Backend.getWords(arguments['group']['id']), // a previously-obtained Future<String> or null
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
+                    List<Widget> items = [];
+                    if (snapshot.hasData) {
+                      for (var item in snapshot.data) {
+                        items.add(Word(word: item));
+                      }
+                    }
+
+                    return SingleChildScrollView(
+                      child: Column (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: items,
+                      )
+                    );
+                  }),
+              )
             ),
 
             Expanded(

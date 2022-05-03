@@ -44,6 +44,10 @@ class Backend {
     return await _call('group/' + id);
   }
 
+  static getWords(int groupId) async {
+    return await _call('word/' + groupId.toString());
+  }
+
   static _call(String url, {Object? value, String type = GET}) async {
     var _url = Uri.parse('http://192.168.0.103/api/' + url);
 
