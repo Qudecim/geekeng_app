@@ -48,6 +48,10 @@ class Backend {
     return await _call('word/' + groupId.toString());
   }
 
+  static addWord(int group_id, String english, String russian) async {
+    return await _call('word', type: POST, value: {'group_id': group_id, 'english':english, 'russian':russian});
+  }
+
   static _call(String url, {Object? value, String type = GET}) async {
     var _url = Uri.parse('http://192.168.0.103/api/' + url);
 
@@ -57,9 +61,11 @@ class Backend {
           "Accept": "application/json"
         };
 
-      if (await SharedPreferencesUtil.readBool('isAuth')) {
-        var token = await SharedPreferencesUtil.readString('token');
-        headers['Authorization'] = "Bearer " + token;
+      if (await SharedPreferencesUtil.isExist('isAuth')) {
+        if (await SharedPreferencesUtil.readBool('isAuth')) {
+          var token = await SharedPreferencesUtil.readString('token');
+          headers['Authorization'] = "Bearer " + token;
+        }
       }
 
       http.Response response;

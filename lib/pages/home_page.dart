@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                     context: context, 
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Reset settings?'),
+                        title: Text('Add words group'),
                         content: Column(
                           children: [
                             Text('Input words group name'),

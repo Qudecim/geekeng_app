@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekeng/style.dart';
 import 'package:geekeng/backend.dart';
 import 'package:geekeng/components/word.dart';
+import 'package:geekeng/components/add_word.dart';
 
 
 class GroupPage extends StatefulWidget {
@@ -82,7 +83,13 @@ class _GroupPage extends State<GroupPage> {
                           iconSize: 22,
                           color: MainStyle.mainText,
                           onPressed: () {
-                            Navigator.pop(context);
+                            var d = showDialog(
+                              context: context, 
+                              builder:  (_) => AddWord(group: arguments['group'])
+                            ).then((result){
+                              print(result);
+                              print('lala');
+                            });
                           },
                         ),
                       )

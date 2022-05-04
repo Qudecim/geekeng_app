@@ -32,4 +32,9 @@ class SharedPreferencesUtil {
     prefs.setBool(key, value);
   }
 
+  static isExist(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(key);
+  }
+
 }
